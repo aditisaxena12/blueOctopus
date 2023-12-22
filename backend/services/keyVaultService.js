@@ -9,12 +9,6 @@ async function getSecret(secretName) {
     console.log('Credential:', credential);
     const secretClient = new SecretClient(keyVaultUrl, credential);
 
-    console.log('Azure Tenant ID:', process.env.AZURE_TENANT_ID);
-    console.log('Azure Client ID:', process.env.AZURE_CLIENT_ID);
-    console.log('Azure Client Secret:', process.env.AZURE_CLIENT_SECRET);
-    console.log('Azure Subscription ID:', process.env.AZURE_SUBSCRIPTION_ID);
-
-
     // Retrieve the secret from Key Vault
     try {
         const secretBundle = await secretClient.getSecret(secretName);
