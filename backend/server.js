@@ -1,6 +1,9 @@
 const keyVaultService = require('./services/keyVaultService');
 const express = require('express');
 const mongoose = require('mongoose');
+const path = require('path');
+const cors = require('cors');
+const postsRouter = require('./routes/posts');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -32,49 +35,17 @@ getBDConnectionString();
 //middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'frontend', 'build')));
 
-//routes
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+// Enable CORS for all routes
+app.use(cors());
 
-const Post = require('./models/Post');
+// Use your postsRouter or other routes
+app.use('/', postsRouter);
 
-// API route to get a list of blog posts
-app.get('/api/posts', async (req, res) => {
-  try {
-    const posts = await Post.find();
-    res.json(posts);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-// API route to get an individual blog post
-app.get('/api/posts/:postId', async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.postId);
-    if (!post) {
-      return res.status(404).json({ error: 'Post not found' });
-    }
-    res.json(post);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-// Create a new blog post
-app.post('/api/posts', async (req, res) => {
-  try {
-    const { title, content } = req.body;
-    const newPost = new Post({ title, content });
-    const savedPost = await newPost.save();
-    res.json(savedPost);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
+// Send the React app for any other requests
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
 });
 
 //start the server
