@@ -3,12 +3,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var app = (0, express_1.default)();
-var port = 8080;
-app.get('/', function (req, res) {
+const express_1 = __importDefault(require("express"));
+const path_1 = __importDefault(require("path"));
+const app = (0, express_1.default)();
+const port = 8080;
+// Define the directory where your frontend build files are located
+const staticDir = path_1.default.join(__dirname, '..', '..', 'frontend', 'build');
+// Serve static files from the 'build' directory
+app.use(express_1.default.static(staticDir));
+app.get('/', (req, res) => {
     res.send('Hello from the backend!');
 });
-app.listen(port, function () {
-    console.log("Server is running on port ".concat(port));
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
