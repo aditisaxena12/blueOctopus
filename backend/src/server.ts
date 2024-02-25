@@ -11,6 +11,11 @@ const staticDir = path.join(__dirname,'..','..','frontend', 'build');
 // Serve static files from the 'build' directory
 app.use(express.static(staticDir));
 
+// Serve index.html for all routes
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..','..','frontend', 'build', 'index.html'));
+});
+
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello from the backend!');
 });

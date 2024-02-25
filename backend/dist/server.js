@@ -11,6 +11,10 @@ const port = 8080;
 const staticDir = path_1.default.join(__dirname, '..', '..', 'frontend', 'build');
 // Serve static files from the 'build' directory
 app.use(express_1.default.static(staticDir));
+// Serve index.html for all routes
+app.get('*', (req, res) => {
+    res.sendFile(path_1.default.join(__dirname, '..', '..', 'frontend', 'build', 'index.html'));
+});
 app.get('/', (req, res) => {
     res.send('Hello from the backend!');
 });
