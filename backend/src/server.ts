@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import {CosmosClient} from '@azure/cosmos';
 
 const app = express();
 const port = 8080;
